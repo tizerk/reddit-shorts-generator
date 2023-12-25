@@ -1,5 +1,6 @@
 from dotenv import load_dotenv
 import tiktok_tts
+import screenshots
 import praw
 from praw.models import MoreComments
 import os
@@ -14,14 +15,14 @@ def tts(id, body, long_tts):
             f"{os.getenv('tiktok_session_id')}",
             tts_voice,
             body,
-            f"comment-{id}.mp3",
+            f"./TTS/comment-{id}.mp3",
         )
     else:
         tiktok_tts.tts(
             f"{os.getenv('tiktok_session_id')}",
             tts_voice,
             body,
-            f"comment-{id}.mp3",
+            f"./TTS/comment-{id}.mp3",
         )
 
 
@@ -31,7 +32,7 @@ def title_tts(post):
         f"{os.getenv('tiktok_session_id')}",
         tts_voice,
         post.title,
-        f"post-title-{post.id}.mp3",
+        f"./TTS/post-title-{post.id}.mp3",
     )
 
 
@@ -48,6 +49,7 @@ def add_comment_tts(comment, long_tts):
 
 def get_post_comments(post):
     comment_count = 0
+    id_list = []
     for comment in post.comments:
         if isinstance(comment, MoreComments):
             continue
@@ -56,11 +58,14 @@ def get_post_comments(post):
             if len(comment.body) > 200:
                 add_comment_tts(comment, True)
                 comment_count += 1
+                id_list.append(comment.id)
             else:
                 add_comment_tts(comment, False)
                 comment_count += 1
+                id_list.append(comment.id)
         if comment_count >= 3:
             break
+    return id_list
 
 
 def main():
@@ -73,7 +78,9 @@ def main():
     for post in reddit.subreddit("askreddit").top(time_filter="day", limit=2):
         print(f"Title: {post.title}")
         title_tts(post)
-        get_post_comments(post)
+        id_list = get_post_comments(post)
+        print(id_list)
+        screenshots.get_screenshots(post, id_list)
 
 
 main()

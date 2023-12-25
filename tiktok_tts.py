@@ -91,8 +91,8 @@ def batch_create(filename: str = "voice.mp3"):
         alphanum_key = lambda key: [convert(c) for c in re.split("([0-9]+)", key)]
         return sorted(data, key=alphanum_key)
 
-    for item in sorted_alphanumeric(os.listdir("./batch/")):
-        filestuff = open("./batch/" + item, "rb").read()
+    for item in sorted_alphanumeric(os.listdir("./TTS/batch/")):
+        filestuff = open("./TTS/batch/" + item, "rb").read()
         out.write(filestuff)
 
     out.close()
@@ -105,16 +105,16 @@ def long_tts(session, text_speaker, textfile, filename):
         req_text, width=chunk_size, break_long_words=True, break_on_hyphens=False
     )
 
-    os.makedirs("./batch/")
+    os.makedirs("./TTS/batch/")
 
     for i, item in enumerate(textlist):
-        tts(session, text_speaker, item, f"./batch/{i}.mp3")
+        tts(session, text_speaker, item, f"./TTS/batch/{i}.mp3")
 
     batch_create(filename)
 
-    for item in os.listdir("./batch/"):
-        os.remove("./batch/" + item)
+    for item in os.listdir("./TTS/batch/"):
+        os.remove("./TTS/batch/" + item)
 
-    os.removedirs("./batch/")
+    os.removedirs("./TTS/batch/")
 
     return
