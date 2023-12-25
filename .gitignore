@@ -2,3 +2,5 @@
 *.mp4
 *.mp3
 __pycache__
+.env
+*.txt
