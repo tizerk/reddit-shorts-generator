@@ -32,7 +32,7 @@ def title_tts(post):
         f"{os.getenv('tiktok_session_id')}",
         tts_voice,
         post.title,
-        f"./TTS/post-title-{post.id}.mp3",
+        f"./TTS/title-{post.id}.mp3",
     )
 
 
@@ -53,7 +53,7 @@ def get_post_comments(post):
     for comment in post.comments:
         if isinstance(comment, MoreComments):
             continue
-        if len(comment.body.split()) < 75 and len(comment.body.split()) >= 35:
+        if len(comment.body.split()) < 85 and len(comment.body.split()) >= 60:
             print(f"Comment: {comment.body}")
             if len(comment.body) > 200:
                 add_comment_tts(comment, True)
@@ -63,7 +63,7 @@ def get_post_comments(post):
                 add_comment_tts(comment, False)
                 comment_count += 1
                 id_list.append(comment.id)
-        if comment_count >= 3:
+        if comment_count >= 2:
             break
     return id_list
 
@@ -75,12 +75,11 @@ def main():
         user_agent=f"{os.getenv('user_agent')}",
     )
 
-    for post in reddit.subreddit("askreddit").top(time_filter="day", limit=2):
+    for post in reddit.subreddit("askreddit").top(time_filter="day", limit=1):
         print(f"Title: {post.title}")
         title_tts(post)
         id_list = get_post_comments(post)
         print(id_list)
         screenshots.get_screenshots(post, id_list)
 
-
-main()
+    return post.id, id_list

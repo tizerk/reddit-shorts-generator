@@ -11,18 +11,18 @@ load_dotenv()
 
 
 def get_screenshots(post, id_list):
-    driver, wait = driver_setup(post.url)
+    driver, wait = initialize_driver(post.url)
     post_ss(driver, wait, post)
     comment_ss(driver, wait, id_list)
     driver.quit()
 
 
 def post_ss(driver, wait, post):
-    post = wait.until(EC.presence_of_element_located((By.CLASS_NAME, "Post")))
+    title = wait.until(EC.presence_of_element_located((By.CLASS_NAME, "Post")))
     driver.execute_script("window.focus();")
-    ss_name = f"Screenshots/Post-{post.id}.png"
+    ss_name = f"Screenshots/title-{post.id}.png"
     with open(ss_name, "wb") as file:
-        file.write(post.screenshot_as_png)
+        file.write(title.screenshot_as_png)
 
 
 def comment_ss(driver, wait, id_list):
@@ -34,13 +34,13 @@ def comment_ss(driver, wait, id_list):
             file.write(comment.screenshot_as_png)
 
 
-def driver_setup(url):
+def initialize_driver(url):
     options = Options()
     options.add_argument(f"user-data-dir={os.getenv('user_data_dir')}")
     options.add_argument("profile-directory=Default")
     service = Service(f"{os.getenv('edge_driver_dir')}")
     driver = webdriver.Edge(service=service, options=options)
-    wait = WebDriverWait(driver, timeout=1000)
+    wait = WebDriverWait(driver, timeout=20)
     driver.set_window_size(width=600, height=800)
     driver.get(url)
 
