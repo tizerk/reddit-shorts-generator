@@ -40,7 +40,7 @@ def initialize_driver(url):
     options.add_argument("profile-directory=Default")
     service = Service(f"{os.getenv('edge_driver_dir')}")
     driver = webdriver.Edge(service=service, options=options)
-    wait = WebDriverWait(driver, timeout=20)
+    wait = WebDriverWait(driver, timeout=60)
     driver.set_window_size(width=600, height=800)
     driver.get(url)
 
