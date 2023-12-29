@@ -1,6 +1,6 @@
 from moviepy.editor import *
-import random, youtube
-import reddit
+import reddit, youtube, instagram
+import random
 
 
 def create_clip(id, is_title):
@@ -66,14 +66,15 @@ def create_final_video():
     video_title = [c for c in video_title if c.isalnum() or c.isspace()]
     video_title = "".join(video_title) + ".mp4"
     print(video_title)
-    final_video.write_videofile(video_title, codec="h264", audio_codec="aac")
+    final_video.write_videofile(video_title, codec="mpeg4", audio_codec="aac")
     final_video.close()
     return video_title
 
 
 def upload_video(video_title):
-    youtube.upload_youtube(video_title)
+    # youtube.upload_youtube(video_title)
+    instagram.upload_instagram(video_title)
 
 
-post = create_final_video()
-upload_video(post)
+# post = create_final_video()
+upload_video("What phrase needs to die immediately.mp4")
