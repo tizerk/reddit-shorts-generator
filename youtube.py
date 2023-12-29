@@ -11,6 +11,7 @@ load_dotenv()
 
 
 def upload_youtube(nameofvid):
+    print("YouTube - Starting Upload...")
     options = Options()
     options.add_experimental_option("excludeSwitches", ["enable-logging"])
     options.add_argument("--log-level=3")
@@ -41,4 +42,4 @@ def upload_youtube(nameofvid):
     done_button.click()
     time.sleep(5)
     driver.quit()
-    print("YouTube - Video Uploaded!")
+    print("YouTube - Upload Complete!")

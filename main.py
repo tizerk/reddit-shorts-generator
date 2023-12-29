@@ -1,5 +1,5 @@
 from moviepy.editor import *
-import reddit, youtube, instagram
+import reddit, youtube, instagram, tiktok
 import random
 
 
@@ -72,9 +72,22 @@ def create_final_video():
 
 
 def upload_video(video_title):
-    # youtube.upload_youtube(video_title)
+    youtube.upload_youtube(video_title)
     instagram.upload_instagram(video_title)
+    tiktok.upload_tiktok(video_title)
 
 
-# post = create_final_video()
-upload_video("What phrase needs to die immediately.mp4")
+def cleanup(video_title):
+    for filename in os.listdir("Screenshots"):
+        file_path = os.path.join("Screenshots", filename)
+        os.remove(file_path)
+    for filename in os.listdir("TTS"):
+        file_path = os.path.join("Screenshots", filename)
+        os.remove(file_path)
+    os.remove(video_title)
+    os.remove(f"{video_title}.jpg")
+
+
+video_title = create_final_video()
+upload_video(video_title)
+cleanup(video_title)

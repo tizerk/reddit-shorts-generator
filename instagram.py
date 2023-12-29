@@ -9,10 +9,12 @@ ACCOUNT_PASSWORD = os.getenv("instagram_password")
 
 
 def upload_instagram(nameofvid):
+    print("Instagram - Starting Upload...")
     cl = Client()
     cl.login(ACCOUNT_USERNAME, ACCOUNT_PASSWORD)
 
-    user_id = cl.user_id_from_username(ACCOUNT_USERNAME)
     caption = nameofvid.replace(".mp4", "")
+    caption = caption + os.getenv("instagram_caption")
 
     cl.clip_upload(nameofvid, caption)
+    print("Instagram - Upload Complete!")
