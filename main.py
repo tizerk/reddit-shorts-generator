@@ -1,6 +1,5 @@
 from moviepy.editor import *
-from youtube_uploader_selenium import YouTubeUploader
-import random, json
+import random, youtube
 import reddit
 
 
@@ -63,31 +62,18 @@ def create_final_video():
             final_video.duration
         )
         final_video = final_video.set_audio(final_audio)
-    final_video.write_videofile("output.mp4", codec="h264", audio_codec="aac")
+    video_title = reddit.markdown_to_text(post.title)
+    video_title = [c for c in video_title if c.isalnum() or c.isspace()]
+    video_title = "".join(video_title) + ".mp4"
+    print(video_title)
+    final_video.write_videofile(video_title, codec="h264", audio_codec="aac")
     final_video.close()
-    create_metadata(post)
+    return video_title
 
 
-def create_metadata(post):
-    with open("output.json", "r", encoding="utf-8") as file:
-        metadata = json.load(file)
-        metadata["title"] = (
-            reddit.markdown_to_text(post.title)
-            + " #shorts #reddit #askreddit #redditstories"
-        )
-        new_metadata = json.dumps(metadata)
-    with open("output.json", "w", encoding="utf-8") as file:
-        file.write(new_metadata)
+def upload_video(video_title):
+    youtube.upload_youtube(video_title)
 
 
-def upload_video():
-    video_path = "output.mp4"
-    metadata_path = "output.json"
-    uploader = YouTubeUploader(video_path, metadata_path)
-    was_video_uploaded, video_id = uploader.upload()
-    assert was_video_uploaded
-    print(f"Video accessible at: https://www.youtube.com/watch?v={video_id}")
-
-
-create_final_video()
-# upload_video()
+post = create_final_video()
+upload_video(post)

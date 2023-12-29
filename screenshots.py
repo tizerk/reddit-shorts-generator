@@ -5,6 +5,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.edge.options import Options
 from selenium.webdriver.edge.service import Service
 from selenium.webdriver.support.ui import WebDriverWait
+from selenium.common.exceptions import TimeoutException
 from selenium.webdriver.support import expected_conditions as EC
 
 load_dotenv()
@@ -18,6 +19,12 @@ def get_screenshots(post, id_list):
 
 
 def post_ss(driver, wait, post):
+    driver.execute_script(
+        "document.querySelector('._1tvdSTbdxaK-BnUbzUIqIY').style.display = 'none';"
+    )
+    driver.execute_script(
+        "document.querySelector('._1cubpGNEaCAVnpJl1KBPcO').style.display = 'none';"
+    )
     title = wait.until(EC.presence_of_element_located((By.CLASS_NAME, "Post")))
     driver.execute_script("window.focus();")
     ss_name = f"Screenshots/title-{post.id}.png"
@@ -27,7 +34,19 @@ def post_ss(driver, wait, post):
 
 def comment_ss(driver, wait, id_list):
     for id in id_list:
-        comment = wait.until(EC.presence_of_element_located((By.ID, f"t1_{id}")))
+        try:
+            comment = wait.until(EC.presence_of_element_located((By.ID, f"t1_{id}")))
+        except TimeoutException:
+            more_comments = wait.until(
+                EC.presence_of_element_located(
+                    (
+                        By.CSS_SELECTOR,
+                        "div._3sf33-9rVAO_v4y0pIW_CH[style='padding-left: 0px;']",
+                    )
+                )
+            )
+            more_comments.click()
+            comment = wait.until(EC.presence_of_element_located((By.ID, f"t1_{id}")))
         driver.execute_script("window.focus();")
         ss_name = f"Screenshots/comment-{id}.png"
         with open(ss_name, "wb") as file:
@@ -40,7 +59,7 @@ def initialize_driver(url):
     options.add_argument("profile-directory=Default")
     service = Service(f"{os.getenv('edge_driver_dir')}")
     driver = webdriver.Edge(service=service, options=options)
-    wait = WebDriverWait(driver, timeout=60)
+    wait = WebDriverWait(driver, timeout=10)
     driver.set_window_size(width=600, height=800)
     driver.get(url)
 

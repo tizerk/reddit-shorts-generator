@@ -73,10 +73,11 @@ def add_comment_tts(comment, long_tts):
 def get_post_comments(post):
     comment_count = 0
     id_list = []
+    post.comment_sort = "top"
     for comment in post.comments:
         if isinstance(comment, MoreComments):
             continue
-        if len(comment.body.split()) < 45 and len(comment.body.split()) >= 25:
+        if len(comment.body.split()) < 50 and len(comment.body.split()) >= 20:
             print(f"Comment: {comment.body}")
             if len(comment.body) > 200:
                 add_comment_tts(comment, True)
