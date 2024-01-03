@@ -10,6 +10,11 @@ import re
 
 load_dotenv()
 
+SUBREDDIT = "askreddit"
+TIMEFRAME = "day"
+COMMENT_VOICE = "en_us_006"
+TITLE_VOICE = "en_us_001"
+
 
 # markdown to text function from https://gist.github.com/lorey/eb15a7f3338f959a78cc3661fbc255fe
 def markdown_to_text(markdown_string):
@@ -32,7 +37,7 @@ def markdown_to_text(markdown_string):
 
 # calling the tiktok tts api for comments
 def tts(id, body, long_tts):
-    tts_voice = "en_us_006"
+    tts_voice = COMMENT_VOICE
     if long_tts:
         tiktok_tts.long_tts(
             f"{os.getenv('tiktok_session_id')}",
@@ -52,7 +57,7 @@ def tts(id, body, long_tts):
 # calling the tiktok tts api for post titles
 def title_tts(post):
     text = markdown_to_text(post.title)
-    tts_voice = "en_us_001"
+    tts_voice = TITLE_VOICE
     tiktok_tts.tts(
         f"{os.getenv('tiktok_session_id')}",
         tts_voice,
@@ -105,7 +110,7 @@ def main():
     )
 
     # getting askreddit's top post of the day, creating TTS files, and calling the screenshots script
-    for post in reddit.subreddit("askreddit").top(time_filter="day", limit=1):
+    for post in reddit.subreddit(SUBREDDIT).top(time_filter=TIMEFRAME, limit=1):
         print(f"Title: {post.title}")
         title_tts(post)
         id_list = get_post_comments(post)

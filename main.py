@@ -2,6 +2,10 @@ from moviepy.editor import *
 import reddit, youtube, instagram, tiktok
 import random, time
 
+YOUTUBE_UPLOAD = True
+INSTAGRAM_UPLOAD = True
+TIKTOK_UPLOAD = True
+
 
 # Creates an ImageClip of screenshot with tts voice audio
 def create_clip(id, is_title):
@@ -77,9 +81,12 @@ def create_final_video():
 
 # calls the upload functions to YouTube, Instagram, and TikTok
 def upload_video(video_title):
-    youtube.upload_youtube(video_title)
-    instagram.upload_instagram(video_title)
-    tiktok.upload_tiktok(video_title)
+    if YOUTUBE_UPLOAD:
+        youtube.upload_youtube(video_title)
+    if INSTAGRAM_UPLOAD:
+        instagram.upload_instagram(video_title)
+    if TIKTOK_UPLOAD:
+        tiktok.upload_tiktok(video_title)
 
 
 # cleans up the files made during video creation
@@ -104,6 +111,6 @@ def community_guidelines(video_title):
 # running the program
 video_title = create_final_video()
 upload_video(video_title)
-time.sleep(10)
+time.sleep(5)
 cleanup(video_title)
 print("Process Complete!")
