@@ -71,8 +71,8 @@ def create_final_video():
         final_video = final_video.set_audio(final_audio)
     video_title = reddit.markdown_to_text(post.title)
     video_title = [c for c in video_title if c.isalnum() or c.isspace()]
-    video_title = community_guidelines(video_title)
     video_title = "".join(video_title) + ".mp4"
+    video_title = community_guidelines(video_title)
     print(video_title)
     final_video.write_videofile(video_title, codec="mpeg4", audio_codec="aac")
     final_video.close()
