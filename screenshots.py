@@ -11,6 +11,7 @@ from selenium.webdriver.support import expected_conditions as EC
 load_dotenv()
 
 
+# calling post_ss and comment_ss
 def get_screenshots(post, id_list):
     driver, wait = initialize_driver(post.url)
     post_ss(driver, wait, post)
@@ -18,6 +19,7 @@ def get_screenshots(post, id_list):
     driver.quit()
 
 
+# taking screenshot of post title
 def post_ss(driver, wait, post):
     driver.execute_script(
         "document.querySelector('._1tvdSTbdxaK-BnUbzUIqIY').style.display = 'none';"
@@ -32,6 +34,7 @@ def post_ss(driver, wait, post):
         file.write(title.screenshot_as_png)
 
 
+# taking screenshot of each comment
 def comment_ss(driver, wait, id_list):
     for id in id_list:
         try:
@@ -53,6 +56,7 @@ def comment_ss(driver, wait, id_list):
             file.write(comment.screenshot_as_png)
 
 
+# initializing driver to Edge directory
 def initialize_driver(url):
     options = Options()
     options.add_argument(f"user-data-dir={os.getenv('user_data_dir')}")

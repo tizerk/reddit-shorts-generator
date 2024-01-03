@@ -11,7 +11,7 @@ import re
 load_dotenv()
 
 
-# Code from https://gist.github.com/lorey/eb15a7f3338f959a78cc3661fbc255fe
+# markdown to text function from https://gist.github.com/lorey/eb15a7f3338f959a78cc3661fbc255fe
 def markdown_to_text(markdown_string):
     """Converts a markdown string to plaintext"""
 
@@ -30,6 +30,7 @@ def markdown_to_text(markdown_string):
     return text
 
 
+# calling the tiktok tts api for comments
 def tts(id, body, long_tts):
     tts_voice = "en_us_006"
     if long_tts:
@@ -48,6 +49,7 @@ def tts(id, body, long_tts):
         )
 
 
+# calling the tiktok tts api for post titles
 def title_tts(post):
     text = markdown_to_text(post.title)
     tts_voice = "en_us_001"
@@ -59,6 +61,7 @@ def title_tts(post):
     )
 
 
+# formatting comments to plain text and filtering between short and long comments
 def add_comment_tts(comment, long_tts):
     id = comment.id
     text = markdown_to_text(comment.body)
@@ -70,6 +73,7 @@ def add_comment_tts(comment, long_tts):
         tts(id, text, False)
 
 
+# getting top comments from the chosen post
 def get_post_comments(post):
     comment_count = 0
     id_list = []
@@ -93,12 +97,14 @@ def get_post_comments(post):
 
 
 def main():
+    # using reddit api with praw wrapper
     reddit = praw.Reddit(
         client_id=f"{os.getenv('client_id')}",
         client_secret=f"{os.getenv('client_secret')}",
         user_agent=f"{os.getenv('user_agent')}",
     )
 
+    # getting askreddit's top post of the day, creating TTS files, and calling the screenshots script
     for post in reddit.subreddit("askreddit").top(time_filter="day", limit=1):
         print(f"Title: {post.title}")
         title_tts(post)

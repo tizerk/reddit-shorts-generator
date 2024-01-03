@@ -1,8 +1,9 @@
 from moviepy.editor import *
 import reddit, youtube, instagram, tiktok
-import random
+import random, time
 
 
+# Creates an ImageClip of screenshot with tts voice audio
 def create_clip(id, is_title):
     if is_title:
         image_path = f"Screenshots/title-{id}.png"
@@ -24,6 +25,7 @@ def create_clip(id, is_title):
     return video_clip
 
 
+# concatenates all ImageClips created with the create_clip() function
 def create_concatenated_clip():
     post, post_id, comment_ids = reddit.main()
     clips = [create_clip(post_id, True)]
@@ -34,6 +36,7 @@ def create_concatenated_clip():
     return reddit_screenshots_clip, post
 
 
+# adds background gameplay and music, then writes the final output video
 def create_final_video():
     random_video = random.randint(1, 5)
     bg_video = VideoFileClip(f"BackgroundVideos/{random_video}.mp4")
@@ -64,6 +67,7 @@ def create_final_video():
         final_video = final_video.set_audio(final_audio)
     video_title = reddit.markdown_to_text(post.title)
     video_title = [c for c in video_title if c.isalnum() or c.isspace()]
+    video_title = community_guidelines(video_title)
     video_title = "".join(video_title) + ".mp4"
     print(video_title)
     final_video.write_videofile(video_title, codec="mpeg4", audio_codec="aac")
@@ -71,23 +75,35 @@ def create_final_video():
     return video_title
 
 
+# calls the upload functions to YouTube, Instagram, and TikTok
 def upload_video(video_title):
     youtube.upload_youtube(video_title)
     instagram.upload_instagram(video_title)
     tiktok.upload_tiktok(video_title)
 
 
+# cleans up the files made during video creation
 def cleanup(video_title):
     for filename in os.listdir("Screenshots"):
-        file_path = os.path.join("Screenshots", filename)
-        os.remove(file_path)
+        os.remove(f"Screenshots/{filename}")
     for filename in os.listdir("TTS"):
-        file_path = os.path.join("Screenshots", filename)
-        os.remove(file_path)
+        os.remove(f"TTS/{filename}")
     os.remove(video_title)
-    os.remove(f"{video_title}.jpg")
 
 
+# modifies the title of the video to abide by YT/IG/TT community guidelines
+def community_guidelines(video_title):
+    video_title.replace("fuck", "fck")
+    video_title.replace("shit", "sht")
+    video_title.replace("bitch", "bch")
+    video_title.replace("asshole", "ahole")
+    video_title.replace("douchebag", "dbag")
+    return video_title
+
+
+# running the program
 video_title = create_final_video()
 upload_video(video_title)
+time.sleep(10)
 cleanup(video_title)
+print("Process Complete!")

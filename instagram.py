@@ -8,6 +8,7 @@ ACCOUNT_USERNAME = os.getenv("instagram_username")
 ACCOUNT_PASSWORD = os.getenv("instagram_password")
 
 
+# uploading video to instagram with clip_upload function from instagrapi
 def upload_instagram(nameofvid):
     print("Instagram - Starting Upload...")
     cl = Client()

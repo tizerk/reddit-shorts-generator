@@ -7,12 +7,13 @@ from selenium.webdriver.chrome.options import Options
 load_dotenv()
 
 
+# uploading video to tiktok using the upload_video function from tiktok_uploader
 def upload_tiktok(nameofvid):
     print("TikTok - Starting Upload...")
     upload_video(
         nameofvid,
         description=nameofvid.replace(".mp4", "")
-        + " #fyp #redditstories #reddit #redditstorytimes #redditreadings #askreddit",
+        + " #fyp #redditstories #reddit #redditstorytimes #redditreadings #askredditdaily",
         cookies=os.getenv("tiktok_cookies"),
         browser="firefox",
     )
