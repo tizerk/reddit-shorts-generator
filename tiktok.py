@@ -1,7 +1,6 @@
 import os
 from dotenv import load_dotenv
 from tiktok_uploader.upload import upload_video
-from selenium.webdriver.chrome.options import Options
 
 
 load_dotenv()

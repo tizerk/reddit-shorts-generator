@@ -3,7 +3,7 @@ __pycache__
 .env
 *.mp4
 *.mp3
-*.txt
 *.png
 *.jpg
 tiktok_cookies.txt
+content.txt
