@@ -18,9 +18,9 @@ If you've ever been on YouTube Shorts, Instagram Reels, or TikTok, you've probab
 ## Setup
 
 1. Create your Reddit App
-   - Follow this [link](https://www.reddit.com/prefs/apps) to set up your Reddit API
+   - Follow this [link](https://www.reddit.com/prefs/apps) to set up your Reddit API access
    - You can use this [tutorial](https://youtu.be/nssOuD9EcVk?t=22) for additional guidance (You just need to get your client ID and secret)
-2. Install the [Microsoft Edge Driver](https://developer.microsoft.com/en-us/microsoft-edge/tools/webdriver/?form=MA13LH) to your C:/Windows/ directory
+2. Install the [Microsoft Edge Driver](https://developer.microsoft.com/en-us/microsoft-edge/tools/webdriver/?form=MA13LH) to your `C:/Windows/` directory
 3. Create your `.env` file with these variables:
 
    ```
