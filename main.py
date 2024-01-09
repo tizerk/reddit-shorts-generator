@@ -76,6 +76,7 @@ def create_final_video():
     print(video_title)
     final_video.write_videofile(video_title, codec="mpeg4", audio_codec="aac")
     final_video.close()
+    final_video = None
     return video_title
 
 
@@ -96,6 +97,9 @@ def cleanup(video_title):
     for filename in os.listdir("TTS"):
         os.remove(f"TTS/{filename}")
     os.remove(video_title)
+    photo_name = video_title.replace(".mp4", ".jpg")
+    if photo_name:
+        os.remove(photo_name)
 
 
 # modifies the title of the video to abide by YT/IG/TT community guidelines
