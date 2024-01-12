@@ -12,7 +12,7 @@ If you've ever been on YouTube Shorts, Instagram Reels, or TikTok, you've probab
 2. Install the required packages with this command:
 
    ```
-   pip install -r requirements.txt
+   $ pip install -r requirements.txt
    ```
 
 ## Setup
@@ -46,10 +46,11 @@ If you've ever been on YouTube Shorts, Instagram Reels, or TikTok, you've probab
 
 > Note: The program will likely encounter errors on the first couple of runs, since some of the packages I used are deprecated and/or broken. The issues should be easy to fix, however.
 
-1. **Default Usage** (Gets top post from past day on r/askreddit)
+1. **Default Usage**
 
    ```
    $ py main.py
+   > Input Post (type "na" for auto-select): "https://www.reddit.com/r/example/post/12345/put_your_reddit_post_here/"
    ```
 
 2. **Custom Usage**
