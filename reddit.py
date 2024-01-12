@@ -109,7 +109,15 @@ def main(video_selection):
         user_agent=f"{os.getenv('user_agent')}",
     )
     # getting user-selected post
-    if video_selection is not "n/a":
+    if video_selection.lower() == "na":
+        # getting askreddit's top post of the day, creating TTS files, and calling the screenshots script
+        for post in reddit.subreddit(SUBREDDIT).top(time_filter=TIMEFRAME, limit=1):
+            print(f"Title: {post.title}")
+            title_tts(post)
+            id_list = get_post_comments(post)
+            print(id_list)
+            screenshots.get_screenshots(post, id_list)
+    else:
         post_url = video_selection
         post_id = post_url.split("/")[6]
         post = reddit.submission(id=post_id)
@@ -118,13 +126,5 @@ def main(video_selection):
         id_list = get_post_comments(post)
         print(id_list)
         screenshots.get_screenshots(post, id_list)
-    else:
-        # getting askreddit's top post of the day, creating TTS files, and calling the screenshots script
-        for post in reddit.subreddit(SUBREDDIT).top(time_filter=TIMEFRAME, limit=1):
-            print(f"Title: {post.title}")
-            title_tts(post)
-            id_list = get_post_comments(post)
-            print(id_list)
-            screenshots.get_screenshots(post, id_list)
 
     return post, post.id, id_list

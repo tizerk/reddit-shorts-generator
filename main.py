@@ -113,7 +113,7 @@ def community_guidelines(video_title):
 
 
 # running the program
-post_selection = input('Input Post (type "n/a" for auto-select)')
+post_selection = input('Input Post (type "na" for auto-select): ')
 video_title = create_final_video(post_selection)
 upload_video(video_title)
 time.sleep(5)
