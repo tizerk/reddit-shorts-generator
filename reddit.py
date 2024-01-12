@@ -101,20 +101,30 @@ def get_post_comments(post):
     return id_list
 
 
-def main():
+def main(video_selection):
     # using reddit api with praw wrapper
     reddit = praw.Reddit(
         client_id=f"{os.getenv('client_id')}",
         client_secret=f"{os.getenv('client_secret')}",
         user_agent=f"{os.getenv('user_agent')}",
     )
-
-    # getting askreddit's top post of the day, creating TTS files, and calling the screenshots script
-    for post in reddit.subreddit(SUBREDDIT).top(time_filter=TIMEFRAME, limit=1):
+    # getting user-selected post
+    if video_selection is not "n/a":
+        post_url = video_selection
+        post_id = post_url.split("/")[6]
+        post = reddit.submission(id=post_id)
         print(f"Title: {post.title}")
         title_tts(post)
         id_list = get_post_comments(post)
         print(id_list)
         screenshots.get_screenshots(post, id_list)
+    else:
+        # getting askreddit's top post of the day, creating TTS files, and calling the screenshots script
+        for post in reddit.subreddit(SUBREDDIT).top(time_filter=TIMEFRAME, limit=1):
+            print(f"Title: {post.title}")
+            title_tts(post)
+            id_list = get_post_comments(post)
+            print(id_list)
+            screenshots.get_screenshots(post, id_list)
 
     return post, post.id, id_list

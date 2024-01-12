@@ -30,8 +30,8 @@ def create_clip(id, is_title):
 
 
 # concatenates all ImageClips created with the create_clip() function
-def create_concatenated_clip():
-    post, post_id, comment_ids = reddit.main()
+def create_concatenated_clip(video_selection):
+    post, post_id, comment_ids = reddit.main(video_selection)
     clips = [create_clip(post_id, True)]
     clips += [create_clip(comment_id, False) for comment_id in comment_ids]
     reddit_screenshots_clip = concatenate_videoclips(
@@ -41,11 +41,11 @@ def create_concatenated_clip():
 
 
 # adds background gameplay and music, then writes the final output video
-def create_final_video():
+def create_final_video(video_selection):
     random_video = random.randint(1, 5)
     bg_video = VideoFileClip(f"BackgroundVideos/{random_video}.mp4")
 
-    concatenated_clip, post = create_concatenated_clip()
+    concatenated_clip, post = create_concatenated_clip(video_selection)
     random_start_time = random.uniform(
         0, bg_video.duration - concatenated_clip.duration
     )
@@ -113,7 +113,8 @@ def community_guidelines(video_title):
 
 
 # running the program
-video_title = create_final_video()
+post_selection = input('Input Post (type "n/a" for auto-select)')
+video_title = create_final_video(post_selection)
 upload_video(video_title)
 time.sleep(5)
 cleanup(video_title)
